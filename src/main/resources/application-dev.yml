@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/qoura_db
+    url: jdbc:mysql://localhost:3306/quora_db
     password: root
     username: root
   jpa:
@@ -9,11 +9,12 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        '[format_sql]': true
+        "[format_sql]": true
+      dialect: org.hibernate.dialect.MySQL8Dialect
 logging:
-    level:
-        '[com.quora]': DEBUG
-        '[org.hibernate.sql]': DEBUG
+  level:
+    "[com.quora]": DEBUG
+    "[org.hibernate.sql]": DEBUG
 
 springdoc:
   swagger-ui:
