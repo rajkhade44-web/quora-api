@@ -5,12 +5,15 @@ spring:
     username: root
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate:
         "[format_sql]": true
       dialect: org.hibernate.dialect.MySQL8Dialect
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
 logging:
   level:
     "[com.quora]": DEBUG
