@@ -1,5 +1,6 @@
 package quora_api.user.entity;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -33,6 +34,30 @@ public class User extends BaseEntity {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
+    @Column(nullable = false)
+    private String password;
+
     @Column(length = 500)
     private String bio;
+
+    private Integer failedLoginAttemps = 0;
+
+    private LocalDateTime lockedUntil;
+
+    public void incrementFailedAttempts() {
+        this.failedLoginAttemps = (this.failedLoginAttemps == null) ? 1 : this.failedLoginAttemps + 1;
+    }
+
+    public void resetFailedAttempts() {
+        this.failedLoginAttemps = 0;
+        this.lockedUntil = null;
+    }
+
+    public void lockAccount(LocalDateTime until) {
+        this.lockedUntil = until;
+    }
+
+    public boolean isAccountLocked() {
+        return lockedUntil != null && lockedUntil.isAfter(LocalDateTime.now());
+    }
 }
