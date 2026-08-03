@@ -2,6 +2,7 @@ package quora_api.question.service.impl;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,8 +32,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public QuestionResponseDto createQuestion(QuestionRequestDto requestDto) {
-        if(!userRepository.existsById(requestDto.getUserId()))
+    public QuestionResponseDto createQuestion(UUID userId,QuestionRequestDto requestDto) {
+        if(!userRepository.existsById(userId))
             throw new ResourceNotFoundException("User not found");
 
         Question question = mapper.toEntity(requestDto);

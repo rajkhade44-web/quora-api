@@ -16,8 +16,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class AnswerRequestDto {
-    @NotNull
-    private UUID userId;
+    // @NotNull
+    // private UUID userId;
 
     @NotBlank
     private String text; //Maps to the "body" from BaseContent

@@ -1,4 +1,4 @@
-package quora_api.answer.dto;
+package quora_api.security.dto;
 
 import java.util.UUID;
 
@@ -13,8 +13,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AnswerUpdateDto {
-    private UUID id;
-    // private UUID userId;
-    private String text;
+public class AuthResponse {
+    private String accessToken;
+    private UUID userId;
+    private String username;
+    private String email;
 }

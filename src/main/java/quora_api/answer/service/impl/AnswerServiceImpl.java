@@ -15,6 +15,7 @@ import quora_api.answer.repository.AnswerRepository;
 import quora_api.answer.service.AnswerService;
 import quora_api.common.exception.ResourceNotFoundException;
 import quora_api.question.repository.QuestionRepository;
+import quora_api.security.utils.SecurityUtils;
 import quora_api.user.repository.UserRepository;
 
 @Service
@@ -29,7 +30,8 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     @Transactional
     public AnswerResponseDto createAnswer(UUID questionId, AnswerRequestDto requestDto) {
-        if (!userRepository.existsById(requestDto.getUserId())) {
+        UUID userId = SecurityUtils.getCurrentUserId();
+        if (!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException("User not found");
         }
 
@@ -44,10 +46,11 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     @Transactional
     public AnswerResponseDto updateAnswer(AnswerUpdateDto updateDto) {
+        UUID userId = SecurityUtils.getCurrentUserId();
         Answer answer = answerRepository.findById(updateDto.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Answer not found"));
 
-        if (answer.getUserId().equals(updateDto.getUserId())) {
+        if (answer.getUserId().equals(userId)) {
             throw new IllegalArgumentException("You can only edit your own answers");
         }
 

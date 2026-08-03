@@ -18,8 +18,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class QuestionRequestDto {
-    @NotNull
-    private UUID userId;
+    // @NotNull
+    // private UUID userId;
 
     @NotBlank
     @Size(max = 255, message = "Question topic cannot exceed 255 characters")

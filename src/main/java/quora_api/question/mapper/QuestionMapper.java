@@ -10,8 +10,8 @@ import quora_api.question.entity.Topic;
 @Component
 public class QuestionMapper {
     public Question toEntity(QuestionRequestDto dto) {
+        // removed user id from following dto
         return Question.builder()
-                .userId(dto.getUserId())
                 .body(dto.getBody())
                 .title(dto.getTitle())
                 .build();

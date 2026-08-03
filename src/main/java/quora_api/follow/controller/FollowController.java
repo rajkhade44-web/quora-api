@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import quora_api.common.dto.ApiResponse;
 import quora_api.follow.service.FollowService;
+import quora_api.security.utils.SecurityUtils;
 
 @RestController
 @RequestMapping("/users")
@@ -17,8 +18,9 @@ import quora_api.follow.service.FollowService;
 public class FollowController {
     private final FollowService followService;
 
-    @PostMapping("/{userId}/follow/{targetUserId}")
-    public ApiResponse<String> follow(@PathVariable UUID userId, @PathVariable UUID targetUserId) {
+    @PostMapping("/follow/{targetUserId}")
+    public ApiResponse<String> follow(@PathVariable UUID targetUserId) {
+        UUID userId = SecurityUtils.getCurrentUserId();
         followService.follow(userId, targetUserId);
         return ApiResponse.success(null, "Followed successfully");
     }

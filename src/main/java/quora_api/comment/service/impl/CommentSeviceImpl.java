@@ -14,6 +14,7 @@ import quora_api.comment.mapper.CommentMapper;
 import quora_api.comment.repository.CommentRepository;
 import quora_api.comment.service.CommentService;
 import quora_api.common.exception.ResourceNotFoundException;
+import quora_api.security.utils.SecurityUtils;
 import quora_api.user.repository.UserRepository;
 
 @Service
@@ -27,7 +28,8 @@ public class CommentSeviceImpl implements CommentService {
     @Override
     @Transactional
     public CommentResponseDto commentOnAnswer(UUID answerId, CommentRequestDto request) {
-        if (userRepository.existsById(request.getUserId()))
+        UUID userId = SecurityUtils.getCurrentUserId();
+        if (userRepository.existsById(userId))
             throw new ResourceNotFoundException("User not found");
         
         if (answerRepository.existsById(answerId))
@@ -40,7 +42,9 @@ public class CommentSeviceImpl implements CommentService {
     @Override
     @Transactional
     public CommentResponseDto commentOnComment(UUID commentId, CommentRequestDto request) {
-        if (!userRepository.existsById(request.getUserId()))
+        UUID userId = SecurityUtils.getCurrentUserId();
+
+        if (!userRepository.existsById(userId))
             throw new ResourceNotFoundException("User not found");
         if (!commentRepository.existsById(commentId))
             throw new ResourceNotFoundException("Parent comment not found");

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import quora_api.common.dto.ApiResponse;
-import quora_api.like.dto.LikeRequestDto;
 import quora_api.like.service.LikeService;
 import quora_api.like.service.impl.LikeServiceImpl;
+import quora_api.security.utils.SecurityUtils;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,9 +24,9 @@ public class LikeController {
 
     @PostMapping("/{type}/{id}/likes")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<String> like(@PathVariable String type, @PathVariable UUID id,
-            @Valid @RequestBody LikeRequestDto requestDto) {
-        likeService.like(id, type, requestDto);
+    public ApiResponse<String> like(@PathVariable String type, @PathVariable UUID id) {
+        UUID currentUserId = SecurityUtils.getCurrentUserId();
+        likeService.like(id, type,currentUserId);
         return ApiResponse.success(null, "Liked Successfully");
     }
 }

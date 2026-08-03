@@ -7,13 +7,15 @@ import org.springframework.stereotype.Component;
 import quora_api.comment.dto.CommentRequestDto;
 import quora_api.comment.dto.CommentResponseDto;
 import quora_api.comment.entity.Comment;
+import quora_api.security.utils.SecurityUtils;
 
 @Component
 public class CommentMapper {
 
     public Comment toEntityForAnswer(CommentRequestDto requestDto, UUID parentId) {
+        UUID userId = SecurityUtils.getCurrentUserId();
         return Comment.builder()
-                .userId(requestDto.getUserId())
+                .userId(userId)
                 .body(requestDto.getText())
                 .parentId(parentId)
                 .parentType("answer")
@@ -21,8 +23,9 @@ public class CommentMapper {
     }
 
     public Comment toEntityForComment(CommentRequestDto requestDto, UUID parentId) {
+        UUID userId = SecurityUtils.getCurrentUserId();
         return Comment.builder()
-                .userId(requestDto.getUserId())
+                .userId(userId)
                 .body(requestDto.getText())
                 .parentId(parentId)
                 .parentType("comment")

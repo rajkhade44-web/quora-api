@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import quora_api.answer.repository.AnswerRepository;
 import quora_api.common.enums.LikeTargetType;
 import quora_api.common.exception.ResourceNotFoundException;
-import quora_api.like.dto.LikeRequestDto;
 import quora_api.like.entity.Like;
 import quora_api.like.repository.LikeRepository;
 import quora_api.like.service.LikeService;
@@ -26,10 +25,9 @@ public class LikeServiceImpl implements LikeService{
 
 
     @Override
-    public void like(UUID targetId, String targetType, LikeRequestDto requestDto) {
-        UUID userId = requestDto.getUserId();
+    public void like(UUID targetId, String targetType, UUID currentUserId) {
 
-        if (!userRepository.existsById(userId)) {
+        if (!userRepository.existsById(currentUserId)) {
             throw new ResourceNotFoundException("User not found");
         }
 
@@ -50,14 +48,14 @@ public class LikeServiceImpl implements LikeService{
             throw new ResourceNotFoundException(type.name() + " with id " + targetId.toString() + " not found");
         }
 
-        if (likeRepository.existsByUserIdAndTargetTypeAndTargetId(userId, type, targetId)) {
+        if (likeRepository.existsByUserIdAndTargetTypeAndTargetId(currentUserId, type, targetId)) {
             return;
         }
 
         Like like = Like.builder()
             .targetId(targetId)
             .targetType(type)
-            .userId(userId)
+            .userId(currentUserId)
             .build();
         likeRepository.save(like);
 

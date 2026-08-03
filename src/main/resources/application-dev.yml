@@ -27,5 +27,9 @@ springdoc:
 app:
   jwt:
     secret: "mySuperSecretKeyForJWTGenerationShouldBeAtLeast32CharsLong"
-    access-expiration-ms: 900000 # 15 min
-    refresh-expiration-ms: 604800000 # 7 days
+    access-expiration-ms: 900000                 # 15 min
+    refresh-expiration-ms: 604800000             # 7 days
+  cookie:
+    secure: false                                # true in production (HTTPS only)
+    domain: localhost                            # your domain in prod
+    same-site: Strict                            # CSRF protection
