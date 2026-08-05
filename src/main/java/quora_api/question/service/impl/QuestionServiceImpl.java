@@ -44,15 +44,18 @@ public class QuestionServiceImpl implements QuestionService {
             Set<Topic> topics = new HashSet<>();
             for (String tag : requestDto.getTopicTags()) {
                 Topic topic = topicRepository.findByName(tag)
-                        .orElseGet(() -> topicRepository.save(new Topic(null, tag, null)));
+                        .orElseGet(() -> topicRepository.save(new Topic(null, tag, new HashSet<>())));
+                // log.info("Topics related to question: "+question.getTopics());
                 question.addTopic(topic);
-                log.info("(QuestionServiceImpl)Topics saved are : "+topic);
+                // log.info("(QuestionServiceImpl)Topics saved are : "+topic);
             }
-            
-            question.setTopics(topics);
+
+            // question.setTopics(topics);
         }
+        log.info("Topics count = {}", question.getTopics().size());
 
         Question savedQuestion = questionRepository.save(question);
+        // savedQuestion.getTopics().forEach(topic ->log.info("Question={} -> Topic={}", savedQuestion.getTitle(), topic.getName()));
         return mapper.toResponseDto(savedQuestion);
     }
 

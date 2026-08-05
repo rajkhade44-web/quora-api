@@ -34,6 +34,7 @@ public class  Topic {
     @Column(nullable = false, unique = true, length = 50)
     private String name;
 
+    @Builder.Default
     @ManyToMany(mappedBy = "topics")
     private Set<Question> questions = new HashSet<>();
 
