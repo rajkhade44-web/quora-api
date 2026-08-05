@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
                 .bio(request.getBio())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .failedLoginAttemps(0)
+                .failedLoginAttempts(0)
                 .build();
         
         user = userRepository.save(user);
@@ -91,6 +91,7 @@ public class AuthServiceImpl implements AuthService {
     private AuthResult buildAuthResponse(User user, String accessToken, String refreshToken) {
         AuthResponse response = AuthResponse.builder()
                 .accessToken(accessToken)
+                .userId(user.getId())
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .build();

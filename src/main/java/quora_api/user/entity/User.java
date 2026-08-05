@@ -40,16 +40,16 @@ public class User extends BaseEntity {
     @Column(length = 500)
     private String bio;
 
-    private Integer failedLoginAttemps = 0;
+    private Integer failedLoginAttempts = 0;
 
     private LocalDateTime lockedUntil;
 
     public void incrementFailedAttempts() {
-        this.failedLoginAttemps = (this.failedLoginAttemps == null) ? 1 : this.failedLoginAttemps + 1;
+        this.failedLoginAttempts = (this.failedLoginAttempts == null) ? 1 : this.failedLoginAttempts + 1;
     }
 
     public void resetFailedAttempts() {
-        this.failedLoginAttemps = 0;
+        this.failedLoginAttempts = 0;
         this.lockedUntil = null;
     }
 

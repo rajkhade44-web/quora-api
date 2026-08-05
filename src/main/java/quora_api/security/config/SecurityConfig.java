@@ -12,17 +12,20 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import lombok.RequiredArgsConstructor;
 import quora_api.security.jwt.AuthEntryPoint;
+import quora_api.security.jwt.AuthTokenFilter;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final AuthEntryPoint authEntryPoint;
+    private final AuthTokenFilter authTokenFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -43,12 +46,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/actuator/health/**", "/actuator/info/**","/actuator/metrics/**", "/actuator/prometheus/**").permitAll()
                         .requestMatchers("/users/**").authenticated()
                         .requestMatchers("/questions/**").authenticated()
                         .requestMatchers("/answers/**").authenticated()
                         .requestMatchers("/comments/**").authenticated()
                         .requestMatchers("/likes/**").authenticated()
-                        .anyRequest().authenticated());
+                        .anyRequest().authenticated())
+                .addFilterBefore(authTokenFilter,UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
     
