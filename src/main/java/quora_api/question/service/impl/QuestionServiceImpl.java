@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import quora_api.common.exception.ResourceNotFoundException;
 import quora_api.question.dto.QuestionRequestDto;
 import quora_api.question.dto.QuestionResponseDto;
@@ -21,6 +22,7 @@ import quora_api.question.repository.TopicRepository;
 import quora_api.question.service.QuestionService;
 import quora_api.user.repository.UserRepository;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
@@ -43,7 +45,10 @@ public class QuestionServiceImpl implements QuestionService {
             for (String tag : requestDto.getTopicTags()) {
                 Topic topic = topicRepository.findByName(tag)
                         .orElseGet(() -> topicRepository.save(new Topic(null, tag, null)));
+                question.addTopic(topic);
+                log.info("(QuestionServiceImpl)Topics saved are : "+topic);
             }
+            
             question.setTopics(topics);
         }
 
