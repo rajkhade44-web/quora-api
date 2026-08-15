@@ -1,5 +1,6 @@
 package quora_api.question.repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -24,4 +25,7 @@ public interface QuestionRepository extends JpaRepository<Question, UUID> {
            "AND q.deletedAt IS NULL"
     )
     Page<Question> searchWithTopics(@Param("text") String text, @Param("tag") String tag, Pageable pageable);
+
+    @Query("SELECT q FROM Question q LEFT JOIN FETCH q.topics WHERE q.id= :id AND q.deletedAt IS NULL")
+    Optional<Question> findActiveById(@Param("id") UUID id);
 }
