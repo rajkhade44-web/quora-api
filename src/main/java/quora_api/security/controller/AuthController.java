@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import quora_api.common.annotation.RateLimited;
 import quora_api.common.dto.ApiResponse;
 import quora_api.security.dto.AuthResponse;
 import quora_api.security.dto.LoginRequest;
@@ -46,6 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @RateLimited(limit = 5, windowSeconds = 60, key = "login")
     public ApiResponse<AuthResponse> login(@Valid @RequestBody LoginRequest request, HttpServletResponse response) {
         var result = authService.login(request);
         response.addHeader("Set-Cookie", cookieUtils.creatResponseTokenCookie(result.getRefreshToken()).toString());

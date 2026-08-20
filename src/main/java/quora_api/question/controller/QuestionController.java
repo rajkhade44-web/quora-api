@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import quora_api.common.annotation.RateLimited;
 import quora_api.common.dto.ApiResponse;
 import quora_api.question.dto.QuestionRequestDto;
 import quora_api.question.dto.QuestionResponseDto;
@@ -39,6 +40,7 @@ public class QuestionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @RateLimited(limit = 10, windowSeconds = 60, key = "question")
     public ApiResponse<QuestionResponseDto> postQuestion(@Valid @RequestBody QuestionRequestDto requestDto) {
         UUID currentUserId = SecurityUtils.getCurrentUserId();
         log.info("Current users userId : {}",currentUserId);

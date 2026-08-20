@@ -17,6 +17,7 @@ import quora_api.answer.dto.AnswerResponseDto;
 import quora_api.answer.dto.AnswerUpdateDto;
 import quora_api.answer.entity.Answer;
 import quora_api.answer.service.AnswerService;
+import quora_api.common.annotation.RateLimited;
 import quora_api.common.dto.ApiResponse;
 
 @RestController
@@ -27,6 +28,7 @@ public class AnswerController {
 
     @PostMapping("/questions/{questionId}/answers")
     @ResponseStatus(HttpStatus.CREATED)
+    @RateLimited(limit = 15, windowSeconds = 60,key = "answer")
     public ApiResponse<AnswerResponseDto> postAnswer(@Valid @RequestBody AnswerRequestDto requestDto,
             @PathVariable UUID questionId) {
         return ApiResponse.success(answerService.createAnswer(questionId, requestDto), "Answer posted successfully");
