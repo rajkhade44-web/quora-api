@@ -22,7 +22,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @Configuration
 @EnableCaching
 public class RedisConfig {
-
+    
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
@@ -60,6 +60,7 @@ public class RedisConfig {
             .cacheDefaults(defaultConfiguration)
             .withInitialCacheConfigurations(cacheConfiguration)
             .build();
+            
     }
 
 }

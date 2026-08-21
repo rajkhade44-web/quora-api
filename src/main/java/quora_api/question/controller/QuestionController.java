@@ -40,7 +40,7 @@ public class QuestionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @RateLimited(limit = 10, windowSeconds = 60, key = "question")
+    @RateLimited(limit = 5, windowSeconds = 60, key = "question")
     public ApiResponse<QuestionResponseDto> postQuestion(@Valid @RequestBody QuestionRequestDto requestDto) {
         UUID currentUserId = SecurityUtils.getCurrentUserId();
         log.info("Current users userId : {}",currentUserId);
